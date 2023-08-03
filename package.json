@@ -29,6 +29,7 @@
   "devDependencies": {
     "tsup": "7.1.0",
     "typescript": "5.0.2",
-    "vite": "4.4.5"
+    "vite": "4.4.5",
+    "@changesets/cli": "^2.26.2"
   }
 }
