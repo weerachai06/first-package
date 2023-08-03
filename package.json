@@ -24,7 +24,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && tsup",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prebuild": "tsc"
   },
   "devDependencies": {
     "tsup": "7.1.0",
