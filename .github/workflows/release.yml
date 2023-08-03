@@ -1,0 +1,47 @@
+name: Publish
+on:
+  push:
+    branches:
+      - "main"
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  publish:
+    name: 📦 Publish Packages
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+      packages: write
+      pull-requests: write
+      issues: read
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.5.x
+          cache: "pnpm"
+
+      - name: install
+        run: pnpm install --frozen-lockfile
+
+      - name: build
+        run: pnpm build
+
+      - name: Create Release Pull Request or Publish
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          publish: pnpm changeset publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
